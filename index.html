@@ -72,7 +72,7 @@ footer a{color:var(--mut)}
     <div class="m"><div class="k">Open positions</div><div class="v" id="oc">–</div><div class="s" id="ocs"></div></div>
   </div>
   <div class="card" id="setcard">
-    <div class="row"><b style="font-size:14px">Settings (applied)</b><a class="btn" id="editbtn" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--line);color:var(--mut);font-weight:500;font-size:13px" href="https://github.com/dedkovic441-hub/mexc-futures-dashboard/edit/settings/settings.json">Edit on GitHub</a></div>
+    <div class="row"><b style="font-size:14px">Settings (applied)</b><a class="btn" id="editbtn" target="_blank" rel="noopener" style="background:transparent;border:1px solid var(--line);color:var(--mut);font-weight:500;font-size:13px" href="https://github.com/akunkuhoki168-codex/mexc-futures-dashboard/edit/settings/settings.json">Edit on GitHub</a></div>
     <div class="sv"><div><div class="k">Take profit (net)</div><div class="v" id="s_tp">–</div></div><div><div class="k">Stop loss (net)</div><div class="v" id="s_sl">–</div></div><div><div class="k">TP cooldown</div><div class="v" id="s_cd">–</div></div></div>
     <div class="s" style="color:var(--mut);font-size:12px" id="s_meta"></div>
     <div class="s" style="color:var(--mut);font-size:12px" id="s_cool"></div>
@@ -124,7 +124,7 @@ footer a{color:var(--mut)}
 </div>
 <script src="poscharts.js"></script>
 <script>
-const RAW = "https://raw.githubusercontent.com/dedkovic441-hub/mexc-futures-dashboard/main/data.json";
+const RAW = "https://raw.githubusercontent.com/akunkuhoki168-codex/mexc-futures-dashboard/main/data.json";
 const STALE_S = 12 * 60;
 let D = null, tab = "open", rng = 0;
 const $ = id => document.getElementById(id);
@@ -245,7 +245,7 @@ window.addEventListener("resize", () => D && drawChart());
 document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
 // ---------- in-page settings: commits settings.json to the 'settings' branch via api.github.com ----------
 // The token is kept ONLY in this browser's localStorage and only sent to api.github.com. Never logged.
-const GH = "https://api.github.com/repos/dedkovic441-hub/mexc-futures-dashboard/contents/";
+const GH = "https://api.github.com/repos/akunkuhoki168-codex/mexc-futures-dashboard/contents/";
 const TOKK = "mf_gh_token", LIM = {tp: 1000, sl: 1000, cd: 10080};
 let fDirty = false, pollT = null;
 const tok = () => { try { return localStorage.getItem(TOKK) || ""; } catch (e) { return ""; } };
@@ -262,7 +262,7 @@ function ghErr(st, j) {
   const m = (j && j.message) ? " (GitHub: " + j.message + ")" : "";
   if (st === 401) return "Token rejected: wrong or expired. Tap Forget token and connect a new one." + m;
   if (st === 403) return "Token lacks permission: it needs Repository permissions → Contents: Read and write on mexc-futures-dashboard (or rate limit)." + m;
-  if (st === 404) return "Not found with this token: the token must have access to dedkovic441-hub/mexc-futures-dashboard (Only select repositories) with Contents: Read and write." + m;
+  if (st === 404) return "Not found with this token: the token must have access to akunkuhoki168-codex/mexc-futures-dashboard (Only select repositories) with Contents: Read and write." + m;
   if (st === 422) return "GitHub refused the change." + m;
   return "GitHub error " + st + m;
 }

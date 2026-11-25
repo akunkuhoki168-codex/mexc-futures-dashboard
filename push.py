@@ -31,7 +31,7 @@ DATA_MSG = "data snapshot"
 DASH_HIST = "http://127.0.0.1:8798/api/history"
 PUSHER_NAME = "mexc-futures-pusher"; PUSHER_EMAIL = "pusher@users.noreply.github.com"
 SETTINGS = "settings.json"; SYNC_FILE = os.path.join(STATE, "settings_sync.json")
-REPO = "dedkovic441-hub/mexc-futures-dashboard"; SET_BRANCH = "settings"
+REPO = "akunkuhoki168-codex/mexc-futures-dashboard"; SET_BRANCH = "settings"
 EDIT_URL = f"https://github.com/{REPO}/edit/{SET_BRANCH}/settings.json"
 SET_HELP = ("Edit the 3 values below and commit: take_profit_usdt = net USDT profit that closes a trade (>0, <=1000); "
             "stop_loss_usdt = net USDT loss that closes a trade (null or 0 = off, max 1000); tp_cooldown_minutes = block "
@@ -160,7 +160,7 @@ def gh_put_settings(text):
     args = ["gh", "api", "-X", "PUT", f"repos/{REPO}/contents/{SETTINGS}", "-f", f"message={msg}", "-f", f"branch={SET_BRANCH}",
             "-f", "content=" + base64.b64encode(text.encode()).decode(), "--jq", ".commit.sha"]
     if blob: args += ["-f", f"sha={blob}"]
-    r = subprocess.run(args, capture_output=True, text=True, timeout=60)
+    r = subprocess.run(args, capture_output=True, text=True, timeout=60, env=auth_env())
     if r.returncode: raise RuntimeError(f"settings mirror via contents API failed: {(r.stderr or r.stdout).strip()[:300]}")
     return r.stdout.strip()
 def sync_settings(R):
@@ -297,8 +297,18 @@ def ctl_public():
     return c
 
 # ---------- git ----------
+def auth_env():
+    """Use GH_TOKEN_NEW at runtime for git and gh. Never log or persist the token."""
+    env = os.environ.copy()
+    tok = env.get("GH_TOKEN_NEW") or ""
+    if not tok:
+        raise RuntimeError("GH_TOKEN_NEW is not set")
+    env["GH_TOKEN"] = tok
+    env["GIT_TERMINAL_PROMPT"] = "0"
+    return env
+
 def git(*a, check=True):
-    r = subprocess.run(["git", "-C", HERE, *a], capture_output=True, text=True, timeout=120)
+    r = subprocess.run(["git", "-C", HERE, *a], capture_output=True, text=True, timeout=120, env=auth_env())
     if check and r.returncode: raise RuntimeError(f"git {' '.join(a)}: {r.stderr.strip()[:400]}")
     return r.stdout.strip()
 

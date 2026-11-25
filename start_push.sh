@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 # Idempotent: starts push.py as a detached background loop unless it is already running.
 cd "$(dirname "$0")" || exit 1
+if [ -z "${GH_TOKEN_NEW:-}" ]; then
+  echo "start_push.sh: GH_TOKEN_NEW is not set; refusing to start" >&2
+  exit 1
+fi
+export GH_TOKEN_NEW
 PIDF=push.pid
 if [ -f "$PIDF" ]; then
   P=$(cat "$PIDF" 2>/dev/null)
